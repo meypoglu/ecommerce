@@ -2,9 +2,11 @@ package dev.patika.ecommerce.api;
 
 import dev.patika.ecommerce.business.abstracts.ICategoryService;
 import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
+import dev.patika.ecommerce.core.result.Result;
 import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.core.utilities.ResultHelper;
 import dev.patika.ecommerce.dto.request.category.CategorySaveRequest;
+import dev.patika.ecommerce.dto.request.category.CategoryUpdateRequest;
 import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.category.CategoryResponse;
 import dev.patika.ecommerce.entities.Category;
@@ -55,9 +57,16 @@ public class CategoryController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CategoryResponse> update(@Valid @RequestBody CategoryUpdateRequest categoryUpdateRequest) {
-        Category saveCategory = this.modelMapper.forRequest().map(categorySaveRequest, Category.class);
-        this.categoryService.save(saveCategory);
-        CategoryResponse categoryResponse = this.modelMapper.forResponse().map(saveCategory, CategoryResponse.class);
-        return ResultHelper.created(categoryResponse);
+        Category updateCategory = this.modelMapper.forRequest().map(categoryUpdateRequest, Category.class);
+        this.categoryService.update(updateCategory);
+        CategoryResponse categoryResponse = this.modelMapper.forResponse().map(updateCategory, CategoryResponse.class);
+        return ResultHelper.success(categoryResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") int id) {
+        this.categoryService.delete(id);
+        return ResultHelper.success();
     }
 }
