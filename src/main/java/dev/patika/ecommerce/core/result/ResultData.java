@@ -1,8 +1,6 @@
-package dev.patika.ecommerce.core.config.modelMapper.result;
+package dev.patika.ecommerce.core.result;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 
