@@ -2,6 +2,9 @@ package dev.patika.ecommerce.core.utilities;
 
 import dev.patika.ecommerce.core.result.Result;
 import dev.patika.ecommerce.core.result.ResultData;
+import dev.patika.ecommerce.dto.response.CursorResponse;
+import dev.patika.ecommerce.dto.response.category.CategoryResponse;
+import org.springframework.data.domain.Page;
 
 public class ResultHelper {
     public static <T> ResultData<T> created(T data) {
@@ -18,5 +21,14 @@ public class ResultHelper {
 
     public static Result notFoundError(String msg) {
         return new Result(false, msg, "404");
+    }
+
+    public static <T> ResultData<CursorResponse<T>> cursor(Page<T> pageData) {
+        CursorResponse<T> cursor = new CursorResponse<>();
+        cursor.setItems(pageData.getContent());
+        cursor.setPageNumber(pageData.getNumber());
+        cursor.setPageSize(pageData.getSize());
+        cursor.setTotalElements(pageData.getTotalElements());
+        return success(cursor);
     }
 }
