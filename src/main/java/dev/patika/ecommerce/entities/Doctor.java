@@ -2,40 +2,38 @@ package dev.patika.ecommerce.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customers")
+@Table(name = "doctors")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id")
+    @Column(name = "doctor_id")
     private int id;
 
     @NotBlank
-    @Column(name = "customer_name")
+    @Column(name = "doctor_name")
     private String name;
 
     @NotBlank
-    @Column(name = "customer_phone")
+    @Column(name = "doctor_phone")
     private String phone;
 
     @NotBlank
-    @Column(name = "customer_mail")
+    @Column(name = "doctor_mail")
     private String mail;
 
     @NotBlank
-    @Column(name = "customer_address")
+    @Column(name = "doctor_address")
     private String address;
 
     @NotBlank
-    @Column(name = "customer_city")
+    @Column(name = "doctor_city")
     private String city;
-
 }

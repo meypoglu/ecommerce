@@ -5,6 +5,8 @@ import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.dto.response.CursorResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public class ResultHelper {
     public static <T> ResultData<T> created(T data) {
         return new ResultData<>(true, Message.CREATED, "201", data);
@@ -15,6 +17,10 @@ public class ResultHelper {
     }
 
     public static <T> ResultData<T> success(T data) {
+        return new ResultData<>(true, Message.OK, "200", data);
+    }
+
+    public static <T> ResultData<List<T>> success(List<T> data) {
         return new ResultData<>(true, Message.OK, "200", data);
     }
 

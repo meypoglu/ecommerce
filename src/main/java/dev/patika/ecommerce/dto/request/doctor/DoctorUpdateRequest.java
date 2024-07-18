@@ -1,4 +1,4 @@
-package dev.patika.ecommerce.dto.request.customer;
+package dev.patika.ecommerce.dto.request.doctor;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerUpdateRequest {
+public class DoctorUpdateRequest {
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
     private int id;
 

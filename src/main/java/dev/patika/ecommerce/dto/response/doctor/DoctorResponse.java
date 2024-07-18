@@ -1,5 +1,4 @@
-package dev.patika.ecommerce.dto.response.customer;
-
+package dev.patika.ecommerce.dto.response.doctor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerResponse {
+public class DoctorResponse {
     private int id;
     private String name;
     private String phone;

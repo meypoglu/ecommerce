@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerManager implements ICustomerService {
     private final CustomerRepo customerRepo;
@@ -29,12 +31,6 @@ public class CustomerManager implements ICustomerService {
     }
 
     @Override
-    public Page<Customer> cursor(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return this.customerRepo.findAll(pageable);
-    }
-
-    @Override
     public Customer update(Customer customer) {
         this.get(customer.getId());
         return this.customerRepo.save(customer);
@@ -45,5 +41,20 @@ public class CustomerManager implements ICustomerService {
         Customer customer = this.get(id);
         this.customerRepo.delete(customer);
         return true;
+    }
+
+    @Override
+    public Page<Customer> cursor(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return this.customerRepo.findAll(pageable);
+    }
+
+    @Override
+    public List<Customer> findByName(String name) {
+        List<Customer> customers = customerRepo.findByNameContainingIgnoreCase(name);
+        if (customers.isEmpty()) {
+            throw new NotFoundException(Message.NOT_FOUND);
+        }
+        return customers;
     }
 }
