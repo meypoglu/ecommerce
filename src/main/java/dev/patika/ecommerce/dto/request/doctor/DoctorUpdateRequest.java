@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorUpdateRequest {
+
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
     private int id;
 
-    @NotBlank(message = "Müşteri ismi boş olamaz")
+    @NotBlank(message = "Doktor ismi boş olamaz")
     private String name;
 
     @NotBlank(message = "Telefon numarası boş olamaz")

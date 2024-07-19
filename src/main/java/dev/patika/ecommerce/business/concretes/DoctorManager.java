@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DoctorManager implements IDoctorService{
+public class DoctorManager implements IDoctorService {
     private final DoctorRepo doctorRepo ;
 
 

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorSaveRequest {
-    @NotBlank(message = "Müşteri ismi boş olamaz")
+
+    @NotBlank(message = "Doktor ismi boş olamaz")
     private String name;
 
     @NotBlank(message = "Telefon numarası boş olamaz")

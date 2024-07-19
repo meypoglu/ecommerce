@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerUpdateRequest {
+
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
     private int id;
 

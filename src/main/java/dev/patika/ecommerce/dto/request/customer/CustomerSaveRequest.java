@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerSaveRequest {
+
     @NotBlank(message = "Müşteri ismi boş olamaz")
     private String name;
 
