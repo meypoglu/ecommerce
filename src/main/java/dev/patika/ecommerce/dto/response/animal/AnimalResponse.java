@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalResponse {
-    private int id;
+    private long id;
     private String name;
     private String species;
     private String breed;
     private String gender;
     private String colour;
     private LocalDate dateOfBirth;
+    private int customerId;
+    private int doctorId;
+    private List<Integer> appointmentIds;
+    private List<Integer> vaccineIds;
 }

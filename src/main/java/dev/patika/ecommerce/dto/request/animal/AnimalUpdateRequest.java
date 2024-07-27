@@ -1,6 +1,7 @@
 package dev.patika.ecommerce.dto.request.animal;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnimalSaveRequest {
+public class AnimalUpdateRequest {
+    @Positive(message = "ID değeri pozitif sayı olmak zorunda")
+    private long id;
+
     @NotBlank(message = "Hayvan adı boş olamaz")
     private String name;
 
@@ -41,4 +45,5 @@ public class AnimalSaveRequest {
 
     @NotBlank(message = "Hayvan aşı ID'si boş olamaz")
     private List<Integer> vaccineIds;
+
 }

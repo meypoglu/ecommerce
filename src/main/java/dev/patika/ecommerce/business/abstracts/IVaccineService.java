@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IVaccineService {
     Vaccine save(Vaccine vaccine);
-    Vaccine get(int id);
+    Vaccine get(List<Integer> id);
     Vaccine update(Vaccine vaccine);
     boolean delete(int id);
     Page<Vaccine> cursor(int page, int pageSize);
