@@ -77,11 +77,11 @@ public class DoctorController {
     @GetMapping("/search")
     public ResultData<List<DoctorResponse>> searchDoctorsByName(@RequestParam(name = "name") String name) {
         List<Doctor> doctors = this.doctorService.findByName(name);
-        List<DoctorResponse> doctorRespons = new ArrayList<>();
+        List<DoctorResponse> doctorResponses = new ArrayList<>();
         for (Doctor doctor : doctors) {
             DoctorResponse doctorResponse = this.modelMapper.forResponse().map(doctor, DoctorResponse.class);
-            doctorRespons.add(doctorResponse);
+            doctorResponses.add(doctorResponse);
         }
-        return ResultHelper.success(doctorRespons);
+        return ResultHelper.success(doctorResponses);
     }
 }

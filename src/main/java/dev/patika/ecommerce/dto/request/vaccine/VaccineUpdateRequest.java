@@ -1,6 +1,7 @@
 package dev.patika.ecommerce.dto.request.vaccine;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 public class VaccineUpdateRequest {
 
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
-    private int id;
+    private long id;
 
     @NotBlank(message = "Aşı ismi boş olamaz")
     private String name;
@@ -22,9 +23,9 @@ public class VaccineUpdateRequest {
     @NotBlank(message = "Aşı kodu boş olamaz")
     private String code;
 
-    @NotBlank(message = "Aşı koruyuculuk başlangıç tarihi boş olamaz")
-    private LocalDate startDate;
+    @NotNull(message = "Aşı koruyuculuk başlangıç tarihi boş olamaz")
+    private LocalDate protectionStartDate;
 
-    @NotBlank(message = "Aşı koruyuculuk sonlanma tarihi boş olamaz")
-    private LocalDate endDate;
+    @NotNull(message = "Aşı koruyuculuk sonlanma tarihi boş olamaz")
+    private LocalDate protectionEndDate;
 }

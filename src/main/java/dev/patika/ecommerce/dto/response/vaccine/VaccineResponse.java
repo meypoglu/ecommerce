@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VaccineResponse {
-    private int id;
+    private long id;
     private String name;
     private String code;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate protectionStartDate;
+    private LocalDate protectionEndDate;
 }

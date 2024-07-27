@@ -2,6 +2,7 @@ package dev.patika.ecommerce.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class Vaccine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vaccine_id")
-    private int id;
+    private long id;
 
     @NotBlank
     @Column(name = "vaccine_name")
@@ -29,11 +30,11 @@ public class Vaccine {
     @Column(name = "vaccine_code")
     private String code;
 
-    @NotBlank
+    @NotNull
     @Column(name = "vaccine_strt_date")
     private LocalDate protectionStartDate;
 
-    @NotBlank
+    @NotNull
     @Column(name = "vaccine_end_date")
     private LocalDate protectionEndDate;
 

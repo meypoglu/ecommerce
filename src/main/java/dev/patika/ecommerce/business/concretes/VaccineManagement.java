@@ -27,8 +27,8 @@ public class VaccineManagement implements IVaccineService {
     }
 
     @Override
-    public Vaccine get(int id) {
-        return this.vaccineRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+    public Vaccine get(long id) {
+        return this.vaccineRepo.findById((int) id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class VaccineManagement implements IVaccineService {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(long id) {
         Vaccine vaccine = this.get(id);
         this.vaccineRepo.delete(vaccine);
         return true;
@@ -51,8 +51,8 @@ public class VaccineManagement implements IVaccineService {
     }
 
     @Override
-    public List<Vaccine> findByDate(LocalDate startDate, LocalDate endDate) {
-        List<Vaccine> vaccines = vaccineRepo.findByEndDateBetween(startDate, endDate);
+    public List<Vaccine> findByDateRange(LocalDate protectionStartDate, LocalDate protectionEndDate) {
+        List<Vaccine> vaccines = vaccineRepo.findByProtectionEndDateBetween(protectionStartDate, protectionEndDate);
         if (vaccines.isEmpty()) {
             throw new NotFoundException(Message.NOT_FOUND);
         }

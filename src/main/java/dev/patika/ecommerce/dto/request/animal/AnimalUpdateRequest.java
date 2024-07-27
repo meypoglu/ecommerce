@@ -1,6 +1,8 @@
 package dev.patika.ecommerce.dto.request.animal;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,19 +33,19 @@ public class AnimalUpdateRequest {
     @NotBlank(message = "Hayvan rengi boş olamaz")
     private String colour;
 
-    @NotBlank(message = "Hayvan doğum tarihi boş olamaz")
+    @Positive(message = "Hayvan doğum tarihi boş olamaz")
     private LocalDate dateOfBirth;
 
-    @NotBlank(message = "Hayvan sahip ID'si boş olamaz")
+    @Positive(message = "Hayvan sahip ID'si boş olamaz")
     private int customerId;
 
-    @NotBlank(message = "Hayvan doktor ID'si boş olamaz")
+    @Positive(message = "Hayvan doktor ID'si boş olamaz")
     private int doctorId;
 
-    @NotBlank(message = "Hayvan randevu ID'si boş olamaz")
-    private List<Integer> appointmentIds;
+    @NotEmpty(message = "Hayvan randevu ID'si boş olamaz")
+    private List<Long> appointmentIds;
 
-    @NotBlank(message = "Hayvan aşı ID'si boş olamaz")
-    private List<Integer> vaccineIds;
+    @NotEmpty(message = "Hayvan aşı ID'si boş olamaz")
+    private List<Long> vaccineIds;
 
 }

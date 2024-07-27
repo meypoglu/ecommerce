@@ -6,6 +6,7 @@ import dev.patika.ecommerce.business.abstracts.IDoctorService;
 import dev.patika.ecommerce.business.abstracts.IVaccineService;
 import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import dev.patika.ecommerce.core.result.ResultData;
+import dev.patika.ecommerce.core.utilities.ResultHelper;
 import dev.patika.ecommerce.dto.request.animal.AnimalSaveRequest;
 import dev.patika.ecommerce.dto.response.animal.AnimalResponse;
 import dev.patika.ecommerce.entities.*;
@@ -23,26 +24,34 @@ public class AnimalController {
     private final IModelMapperService modelMapper;
     private final ICustomerService customerService;
     private final IDoctorService doctorService;
-    private final IAppointmentService appointmentService;
+    //private final IAppointmentService appointmentService;
     private final IVaccineService vaccineService;
-    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper) {
+    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper, ICustomerService customerService, IDoctorService doctorService, IVaccineService vaccineService) {
         this.animalService = animalService;
         this.modelMapper = modelMapper;
+        this.customerService = customerService;
+        this.doctorService = doctorService;
+        //this.appointmentService = appointmentService;
+        this.vaccineService = vaccineService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AnimalResponse> save(@Valid @RequestBody AnimalSaveRequest animalSaveRequest) {
         Animal saveAnimal = this.modelMapper.forRequest().map(animalSaveRequest, Animal.class);
+
         Customer customer = this.customerService.get(animalSaveRequest.getCustomerId());
         saveAnimal.setCustomer(customer);
+
         Doctor doctor = this.doctorService.get(animalSaveRequest.getDoctorId());
         saveAnimal.setDoctor(doctor);
 
         List<Vaccine> vaccines = animalSaveRequest.getVaccineIds().stream()
                 .map(vaccineService::get)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         saveAnimal.setVaccineList(vaccines);
 
+        this.animalService.save(saveAnimal);
+        return ResultHelper.created(this.modelMapper.forResponse().map(saveAnimal, AnimalResponse.class));
     }
 }

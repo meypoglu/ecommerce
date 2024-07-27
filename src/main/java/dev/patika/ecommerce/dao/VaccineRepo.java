@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface VaccineRepo extends JpaRepository<Vaccine, Integer> {
-    List<Vaccine> findByEndDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Vaccine> findByProtectionEndDateBetween(LocalDate protectionStartDate, LocalDate protectionEndDate);
 }
