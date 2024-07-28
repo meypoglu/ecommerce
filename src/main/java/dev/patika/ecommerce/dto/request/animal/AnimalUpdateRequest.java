@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AnimalUpdateRequest {
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Hayvan adı boş olamaz")
     private String name;
@@ -37,13 +37,7 @@ public class AnimalUpdateRequest {
     private LocalDate dateOfBirth;
 
     @Positive(message = "Hayvan sahip ID'si boş olamaz")
-    private int customerId;
-
-    @Positive(message = "Hayvan doktor ID'si boş olamaz")
-    private int doctorId;
-
-    @NotEmpty(message = "Hayvan randevu ID'si boş olamaz")
-    private List<Long> appointmentIds;
+    private Long customerId;
 
     @NotEmpty(message = "Hayvan aşı ID'si boş olamaz")
     private List<Long> vaccineIds;

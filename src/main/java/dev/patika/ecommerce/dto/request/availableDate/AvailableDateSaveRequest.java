@@ -1,5 +1,6 @@
 package dev.patika.ecommerce.dto.request.availableDate;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class AvailableDateSaveRequest {
     @NotNull(message = "Tarih boş olamaz")
     private LocalDate date;
 
-    @NotNull(message = "Doktor ID'si boş olamaz")
+    @NotEmpty(message = "Doktor ID'si boş olamaz")
+    @NotNull
     private List<Long> doctorIds;
 }

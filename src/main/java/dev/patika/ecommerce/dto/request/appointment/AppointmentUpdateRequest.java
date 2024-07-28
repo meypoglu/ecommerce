@@ -1,5 +1,6 @@
 package dev.patika.ecommerce.dto.request.appointment;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -13,17 +14,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AppointmentUpdateRequest {
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
-    private long id;
+    private Long id;
 
     @NotNull(message = "Randevu tarihi boş olamaz")
     private LocalDateTime appointmentDate;
 
-    @NotNull(message = "Hayvan ID'si boş olamaz")
-    private long animalId;
+    @Positive(message = "Hayvan ID'si boş olamaz")
+    private Long animalId;
 
-    @NotNull(message = "Doktor ID'si boş olamaz")
-    private long doctorId;
+    @Positive(message = "Doktor ID'si boş olamaz")
+    private Long doctorId;
 
-    @NotNull(message = "Müsaitlik tarihi ID'si boş olamaz")
-    private long availableDateId;
+    @Positive(message = "Müsaitlik tarihi ID'si boş olamaz")
+    private Long availableDateId;
 }

@@ -19,15 +19,28 @@ public class AvailableDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "available_date_id")
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "available_date")
     private LocalDate availableDate;
 
-    @ManyToMany(mappedBy = "availableDates")
-    private List<Doctor> doctors = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_available_date",
+            joinColumns = @JoinColumn(name = "available_date_id"),
+            inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
+    private List<Doctor> doctorList = new ArrayList<>();
 
     @OneToMany(mappedBy = "availableDate")
     private List<Appointment> appointments = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "AvailableDate{" +
+                "id=" + id +
+                ", availableDate=" + availableDate +
+                '}';
+    }
 }

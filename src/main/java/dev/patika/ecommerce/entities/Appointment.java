@@ -19,7 +19,7 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "appointment_date")
@@ -36,4 +36,15 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "appointment_available_date_id", referencedColumnName = "available_date_id")
     private AvailableDate availableDate;
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", appointmentDate=" + appointmentDate +
+                ", animal=" + (animal != null ? animal.getId() : "null") +
+                ", doctorAppointment=" + (doctorAppointment != null ? doctorAppointment.getId() : "null") +
+                ", availableDate=" + (availableDate != null ? availableDate.getId() : "null") +
+                '}';
+    }
 }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ICustomerService {
     Customer save(Customer customer);
-    Customer get(int id);
+    Customer get(Long id);
     Customer update(Customer customer);
-    boolean delete(int id);
+    boolean delete(Long id);
     Page<Customer> cursor(int page, int pageSize);
     List<Customer> findByName(String name);
 }

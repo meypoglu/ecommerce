@@ -18,7 +18,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
-    private int id;
+    private Long id;
 
     @NotBlank
     @Column(name = "customer_name")
@@ -42,4 +42,14 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Animal> animals;
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                // animals eklenmedi
+                '}';
+    }
 }

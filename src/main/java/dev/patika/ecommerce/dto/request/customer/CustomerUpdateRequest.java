@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class CustomerUpdateRequest {
 
     @Positive(message = "ID değeri pozitif sayı olmak zorunda")
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Müşteri ismi boş olamaz")
     private String name;

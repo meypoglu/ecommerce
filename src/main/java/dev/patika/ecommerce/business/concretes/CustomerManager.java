@@ -26,8 +26,8 @@ public class CustomerManager implements ICustomerService {
     }
 
     @Override
-    public Customer get(int id) {
-        return this.customerRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+    public Customer get(Long id) {
+        return this.customerRepo.findById(id.intValue()).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CustomerManager implements ICustomerService {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(Long id) {
         Customer customer = this.get(id);
         this.customerRepo.delete(customer);
         return true;

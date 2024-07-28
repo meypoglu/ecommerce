@@ -20,7 +20,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "animal_id")
-    private long id;
+    private Long id;
 
     @NotBlank
     @Column(name = "animal_name")
@@ -61,5 +61,15 @@ public class Animal {
     @JoinTable(name = "animalToVaccine", joinColumns = {@JoinColumn(name = "animal_id")}, inverseJoinColumns = {@JoinColumn(name = "vaccine_id")})
     private List<Vaccine> vaccineList = new ArrayList<>();
 
-
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", species='" + species + '\'' +
+                ", birthDate=" + dateOfBirth +
+                ", customer=" + (customer != null ? customer.getId() : "null") +
+                // appointments eklenmedi
+                '}';
+    }
 }

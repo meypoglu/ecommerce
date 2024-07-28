@@ -30,7 +30,7 @@ public class DoctorManager implements IDoctorService {
 
     @Override
     public Doctor get(long id) {
-        return this.doctorRepo.findById((int) id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+        return this.doctorRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override

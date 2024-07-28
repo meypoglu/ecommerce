@@ -40,43 +40,70 @@ public class AnimalController {
         this.vaccineService = vaccineService;
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AnimalResponse> save(@Valid @RequestBody AnimalSaveRequest animalSaveRequest) {
-        Animal saveAnimal = this.modelMapper.forRequest().map(animalSaveRequest, Animal.class);
+        Animal animal = modelMapper.forRequest().map(animalSaveRequest, Animal.class);
 
-        Customer customer = this.customerService.get(animalSaveRequest.getCustomerId());
-        saveAnimal.setCustomer(customer);
-
-        Doctor doctor = this.doctorService.get(animalSaveRequest.getDoctorId());
-        saveAnimal.setDoctor(doctor);
+        Customer customer = customerService.get(animalSaveRequest.getCustomerId());
+        animal.setCustomer(customer);
 
         List<Vaccine> vaccines = animalSaveRequest.getVaccineIds().stream()
                 .map(vaccineService::get)
                 .collect(Collectors.toList());
-        saveAnimal.setVaccineList(vaccines);
+        animal.setVaccineList(vaccines);
 
-        this.animalService.save(saveAnimal);
-        return ResultHelper.created(this.modelMapper.forResponse().map(saveAnimal, AnimalResponse.class));
+        Animal savedAnimal = animalService.save(animal);
+
+        // AnimalResponse oluşturulurken Customer ve Vaccine ID'leri ekleniyor
+        AnimalResponse response = new AnimalResponse();
+        response.setId(savedAnimal.getId());
+        response.setName(savedAnimal.getName());
+        response.setSpecies(savedAnimal.getSpecies());
+        response.setBreed(savedAnimal.getBreed());
+        response.setGender(savedAnimal.getGender());
+        response.setColour(savedAnimal.getColour());
+        response.setDateOfBirth(savedAnimal.getDateOfBirth());
+        response.setCustomerId(savedAnimal.getCustomer().getId());
+        response.setVaccineIds(savedAnimal.getVaccineList().stream()
+                .map(Vaccine::getId)
+                .collect(Collectors.toList()));
+
+        return ResultHelper.created(response);
     }
+
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CustomerResponse> get(@PathVariable("id") int id) {
+    public ResultData<CustomerResponse> get(@PathVariable("id") Long id) {
         Customer customer = this.customerService.get(id);
         CustomerResponse customerResponse = this.modelMapper.forResponse().map(customer, CustomerResponse.class);
         return ResultHelper.success(customerResponse);
     }
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<AnimalResponse>> cursor(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") int pageSize)
-    {
-        Page<Animal> animalPage = this.animalService.cursor(page, pageSize);
-        Page<AnimalResponse> animalResponsePage = animalPage.map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class));
-        return ResultHelper.cursor(animalResponsePage);
+    @GetMapping
+    public ResultData<List<AnimalResponse>> getAllAnimals() {
+        List<Animal> animals = animalService.getAllAnimals();
+        List<AnimalResponse> response = animals.stream()
+                .map(animal -> {
+                    AnimalResponse animalResponse = new AnimalResponse();
+                    animalResponse.setId(animal.getId());
+                    animalResponse.setName(animal.getName());
+                    animalResponse.setSpecies(animal.getSpecies());
+                    animalResponse.setBreed(animal.getBreed());
+                    animalResponse.setGender(animal.getGender());
+                    animalResponse.setColour(animal.getColour());
+                    animalResponse.setDateOfBirth(animal.getDateOfBirth());
+                    animalResponse.setCustomerId(animal.getCustomer().getId());
+                    animalResponse.setVaccineIds(animal.getVaccineList().stream()
+                            .map(Vaccine::getId)
+                            .collect(Collectors.toList()));
+                    return animalResponse;
+                })
+                .collect(Collectors.toList());
+        return ResultHelper.success(response);
     }
+
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -89,7 +116,7 @@ public class AnimalController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") int id) {
+    public Result delete(@PathVariable("id") Long id) {
         this.animalService.delete(id);
         return ResultHelper.success();
     }

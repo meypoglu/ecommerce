@@ -2,6 +2,7 @@ package dev.patika.ecommerce.api;
 
 import dev.patika.ecommerce.business.abstracts.IAppointmentService;
 import dev.patika.ecommerce.business.abstracts.IAvailableDateService;
+import dev.patika.ecommerce.business.abstracts.IDoctorService;
 import dev.patika.ecommerce.business.concretes.AvailableDateManager;
 import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import dev.patika.ecommerce.core.result.Result;
@@ -16,16 +17,17 @@ import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.appointment.AppointmentResponse;
 import dev.patika.ecommerce.dto.response.availableDateResponse.AvailableDateResponse;
 import dev.patika.ecommerce.dto.response.customer.CustomerResponse;
-import dev.patika.ecommerce.entities.Appointment;
-import dev.patika.ecommerce.entities.AvailableDate;
-import dev.patika.ecommerce.entities.Customer;
+import dev.patika.ecommerce.entities.*;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @RestController
@@ -33,23 +35,37 @@ import java.util.stream.Collectors;
 public class AvailableDateController {
     private final IAvailableDateService availableDateService;
     private final IModelMapperService modelMapper;
+    private final IDoctorService doctorService;
 
-    public AvailableDateController(IAvailableDateService availableDateService, IModelMapperService modelMapper) {
+    public AvailableDateController(IAvailableDateService availableDateService, IModelMapperService modelMapper, IDoctorService doctorService) {
         this.availableDateService = availableDateService;
         this.modelMapper = modelMapper;
+        this.doctorService = doctorService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AvailableDateResponse> save(@Valid @RequestBody AvailableDateSaveRequest availableDateSaveRequest) {
-        AvailableDate saveAvailableDate = this.modelMapper.forRequest().map(availableDateSaveRequest, AvailableDate.class);
+        AvailableDate saveAvailableDate = new AvailableDate();
+        saveAvailableDate.setAvailableDate(availableDateSaveRequest.getDate());
+
+        List<Doctor> doctors = availableDateSaveRequest.getDoctorIds().stream()
+                .map(doctorService::get)
+                .collect(Collectors.toList());
+        saveAvailableDate.setDoctorList(doctors);
         try {
             this.availableDateService.save(saveAvailableDate);
+            AvailableDate savedDate = availableDateService.getAvailableDateById(saveAvailableDate.getId());
+            AvailableDateResponse response = new AvailableDateResponse();
+            response.setId(savedDate.getId());
+            response.setDate(savedDate.getAvailableDate());
+            response.setDoctorIds(savedDate.getDoctorList().stream()
+                    .map(Doctor::getId)
+                    .collect(Collectors.toList()));
+            return ResultHelper.created(response);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        AvailableDateResponse availableDateResponse = this.modelMapper.forRequest().map(saveAvailableDate, AvailableDateResponse.class);
-        return ResultHelper.created(availableDateResponse);
     }
 
     @PutMapping
@@ -76,7 +92,15 @@ public class AvailableDateController {
     public ResultData<List<AvailableDateResponse>> getAllAvailableDates() {
         List<AvailableDate> availableDates = this.availableDateService.getAllAvailableDates();
         List<AvailableDateResponse> response = availableDates.stream()
-                .map(availableDate -> this.modelMapper.forRequest().map(availableDate, AvailableDateResponse.class))
+                .map(availableDate -> {
+                    AvailableDateResponse availableDateResponse = new AvailableDateResponse();
+                    availableDateResponse.setId(availableDate.getId());
+                    availableDateResponse.setDate(availableDate.getAvailableDate());
+                    availableDateResponse.setDoctorIds(availableDate.getDoctorList().stream()
+                            .map(Doctor::getId)
+                            .collect(Collectors.toList()));
+                    return availableDateResponse;
+                })
                 .collect(Collectors.toList());
         return ResultHelper.success(response);
     }

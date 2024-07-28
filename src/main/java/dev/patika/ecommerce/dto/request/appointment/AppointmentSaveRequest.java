@@ -15,12 +15,12 @@ public class AppointmentSaveRequest {
     @NotNull(message = "Randevu tarihi boş olamaz")
     private LocalDateTime appointmentDate;
 
-    @NotNull(message = "Hayvan ID'si boş olamaz")
-    private long animalId;
+    @Positive(message = "Hayvan ID'si boş olamaz")
+    private Long animalId;
 
-    @NotNull(message = "Doktor ID'si boş olamaz")
-    private long doctorId;
+    @Positive(message = "Doktor ID'si boş olamaz")
+    private Long doctorId;
 
-    @NotNull(message = "Müsaitlik tarihi ID'si boş olamaz")
-    private long availableDateId;
+    @Positive(message = "Müsaitlik tarihi ID'si boş olamaz")
+    private Long availableDateId;
 }

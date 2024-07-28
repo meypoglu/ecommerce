@@ -34,13 +34,7 @@ public class AnimalSaveRequest {
     private LocalDate dateOfBirth;
 
     @Positive(message = "Hayvan sahip ID'si boş olamaz")
-    private int customerId;
-
-    @Positive(message = "Hayvan doktor ID'si boş olamaz")
-    private int doctorId;
-
-    @NotEmpty(message = "Hayvan randevu ID'si boş olamaz")
-    private List<Long> appointmentIds;
+    private Long customerId;
 
     @NotEmpty(message = "Hayvan aşı ID'si boş olamaz")
     private List<Long> vaccineIds;

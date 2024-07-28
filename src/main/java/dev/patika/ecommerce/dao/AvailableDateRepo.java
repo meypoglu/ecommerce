@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface AvailableDateRepo extends JpaRepository<AvailableDate, Integer> {
-    List<AvailableDate> findByDoctors_IdAndAvailableDate(Long doctorId, LocalDate date);
-    List<AvailableDate> findByDoctors_Id(Long doctorId);
+public interface AvailableDateRepo extends JpaRepository<AvailableDate, Long> {
+    List<AvailableDate> findByDoctorList_IdAndAvailableDate(Long doctorId, LocalDate date);
+    List<AvailableDate> findByDoctorList_Id(Long doctorId);
 
 }

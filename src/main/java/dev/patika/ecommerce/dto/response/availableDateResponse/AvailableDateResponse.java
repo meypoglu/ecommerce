@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AvailableDateResponse {
-    private long id;
+    private Long id;
     private LocalDate date;
     private List<Long> doctorIds;
 }

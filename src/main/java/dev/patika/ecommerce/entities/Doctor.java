@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctor {
+public class    Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_id")
-    private long id;
+    private Long id;
 
     @NotBlank
     @Column(name = "doctor_name")
@@ -46,7 +46,18 @@ public class Doctor {
     @OneToMany(mappedBy = "doctorAppointment")
     private List<Appointment> appointments;
 
-    @ManyToMany
-    @JoinTable( name = "doctor_available_date", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "available_date_id"))
+    @ManyToMany(mappedBy = "doctorList")
     private List<AvailableDate> availableDates = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", mail='" + mail + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

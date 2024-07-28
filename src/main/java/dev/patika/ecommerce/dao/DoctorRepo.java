@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DoctorRepo extends JpaRepository<Doctor, Integer> {
+public interface DoctorRepo extends JpaRepository<Doctor, Long> {
     List<Doctor> findByNameContainingIgnoreCase(String name);
 
 }
