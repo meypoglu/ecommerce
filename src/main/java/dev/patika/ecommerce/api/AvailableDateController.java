@@ -83,7 +83,6 @@ public class AvailableDateController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
-        // Güncellenmiş veriyi almak için tekrar yükleyin
         AvailableDate updatedDate = availableDateService.getAvailableDateById(updateAvailableDate.getId());
 
         AvailableDateResponse availableDateResponse = this.modelMapper.forResponse().map(updatedDate, AvailableDateResponse.class);

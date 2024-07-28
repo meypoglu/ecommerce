@@ -34,6 +34,6 @@ public class AnimalSaveRequest {
     @Positive(message = "Customer ID is required")
     private Long customerId;
 
-    @Positive(message = "Doctor ID must be positive")
+    @Positive(message = "Doktor ID'si pozitif olmalıdır")
     private Long doctorId;
 }

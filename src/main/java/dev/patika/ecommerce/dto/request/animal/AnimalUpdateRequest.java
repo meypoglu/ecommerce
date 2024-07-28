@@ -39,7 +39,7 @@ public class AnimalUpdateRequest {
     @Positive(message = "Hayvan sahip ID'si boş olamaz")
     private Long customerId;
 
-    @Positive(message = "Doctor ID must be positive")
+    @Positive(message = "Doktor ID'si pozitif olmalıdır")
     private Long doctorId;
 
 }

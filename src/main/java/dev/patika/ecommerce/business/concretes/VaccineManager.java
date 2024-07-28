@@ -28,7 +28,6 @@ public class VaccineManager implements IVaccineService {
 
     @Override
     public Vaccine save(Vaccine vaccine) {
-        // Aynı isim ve kod ile koruyuculuk süresi devam eden aşı var mı kontrol et
         List<Vaccine> existingVaccines = vaccineRepo.findByNameAndCodeAndAnimal_Id(vaccine.getName(), vaccine.getCode(), vaccine.getAnimal().getId());
         for (Vaccine v : existingVaccines) {
             if (!v.getProtectionEndDate().isBefore(LocalDate.now())) {

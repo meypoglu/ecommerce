@@ -65,12 +65,9 @@ public class AppointmentController {
             saveAppointment.setAvailableDate(availableDate);
 
             this.appointmentService.save(saveAppointment);
-            logger.info("Appointment saved: {}", saveAppointment);
         } catch (NotFoundException e) {
-            logger.error("Not found error: {}", e.getMessage());
             throw new CustomException(HttpStatus.NOT_FOUND, "Veri bulunamadı: " + e.getMessage());
         } catch (Exception e) {
-            logger.error("Bad request error: {}", e.getMessage());
             throw new CustomException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return ResultHelper.created(this.modelMapper.forResponse().map(saveAppointment, AppointmentResponse.class));
@@ -124,8 +121,6 @@ public class AppointmentController {
             @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(name = "animalId") Long animalId) {
 
-        logger.info("Searching appointments for animal ID: {} between {} and {}", animalId, startDate, endDate);
-
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
@@ -143,8 +138,6 @@ public class AppointmentController {
             @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(name = "doctorId") Long doctorId) {
-
-        logger.info("Searching appointments for doctor ID: {} between {} and {}", doctorId, startDate, endDate);
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);

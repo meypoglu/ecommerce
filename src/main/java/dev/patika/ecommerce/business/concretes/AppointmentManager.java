@@ -33,13 +33,10 @@ public class AppointmentManager implements IAppointmentService {
 
     @Override
     public Appointment save(Appointment appointment) throws Exception {
-        logger.info("Saving appointment: {}", appointment);
         if (isDoctorAvailable(appointment.getDoctorAppointment().getId(), appointment.getAppointmentDate())) {
             Appointment savedAppointment = this.appointmentRepo.save(appointment);
-            logger.info("Saved appointment: {}", savedAppointment);
             return savedAppointment;
         } else {
-            logger.warn("Doctor is not available at the specified time: {}", appointment.getAppointmentDate());
             throw new Exception("Doktor, belirtilen zamanda uygun değildir");
         }
     }
@@ -77,35 +74,24 @@ public class AppointmentManager implements IAppointmentService {
     }
 
     private boolean isDoctorAvailable(Long doctorId, LocalDateTime dateTime) {
-        logger.info("Checking availability for doctor ID: {} at time: {}", doctorId, dateTime);
-
-        // Saat kontrolü: sadece saat başı randevu alınabilir
         if (dateTime.getMinute() != 0 || dateTime.getSecond() != 0 || dateTime.getNano() != 0) {
-            logger.warn("Invalid appointment time: {}", dateTime);
             return false;
         }
 
-        // Gün kontrolü: Doktorun o gün için uygunluğu
         List<AvailableDate> availableDateList = availableDateRepo.findByDoctorList_IdAndAvailableDate(doctorId, dateTime.toLocalDate());
-        logger.info("Available dates for doctor on {}: {}", dateTime.toLocalDate(), availableDateList);
         if (availableDateList.isEmpty()) {
-            logger.warn("Doctor is not available on date: {}", dateTime.toLocalDate());
             return false;
         }
 
-        // Zaman dilimi kontrolü: Aynı saat diliminde başka bir randevu olmamalı
         LocalDateTime startTime = dateTime;
         LocalDateTime endTime = dateTime.plusMinutes(59).plusSeconds(59);
 
-        logger.info("Checking appointments between {} and {}", startTime, endTime);
 
         List<Appointment> appointments = appointmentRepo.findByDoctorAppointment_IdAndAppointmentDateBetween(doctorId, startTime, endTime);
         boolean isAvailable = appointments.isEmpty();
-        logger.info("Found {} appointments in this time range. Is available: {}", appointments.size(), isAvailable);
 
         if (!isAvailable) {
             for (Appointment app : appointments) {
-                logger.info("Conflicting appointment found: ID={}, Date={}", app.getId(), app.getAppointmentDate());
             }
         }
 

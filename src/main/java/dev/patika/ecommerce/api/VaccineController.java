@@ -43,7 +43,7 @@ public class VaccineController {
         Vaccine savedVaccine = vaccineService.save(vaccine);
 
         VaccineResponse response = new VaccineResponse();
-        response.setId(savedVaccine.getId()); // Bu kısım önemli, doğru ID set ediliyor mu kontrol edin
+        response.setId(savedVaccine.getId());
         response.setName(savedVaccine.getName());
         response.setCode(savedVaccine.getCode());
         response.setProtectionStartDate(savedVaccine.getProtectionStartDate());
