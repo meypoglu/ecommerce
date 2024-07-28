@@ -40,7 +40,7 @@ public class Customer {
     @Column(name = "customer_city")
     private String city;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Animal> animals;
 
     @Override

@@ -40,13 +40,13 @@ public class    Doctor {
     @Column(name = "doctor_city")
     private String city;
 
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Animal> animals;
 
-    @OneToMany(mappedBy = "doctorAppointment")
+    @OneToMany(mappedBy = "doctorAppointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Appointment> appointments;
 
-    @ManyToMany(mappedBy = "doctorList")
+    @ManyToMany(mappedBy = "doctorList", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<AvailableDate> availableDates = new ArrayList<>();
 
     @Override

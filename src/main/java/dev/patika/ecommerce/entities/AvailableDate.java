@@ -25,7 +25,7 @@ public class AvailableDate {
     @Column(name = "available_date")
     private LocalDate availableDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "doctor_available_date",
             joinColumns = @JoinColumn(name = "available_date_id"),
