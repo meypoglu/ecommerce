@@ -1,38 +1,29 @@
 package dev.patika.ecommerce.api;
 
-import dev.patika.ecommerce.business.abstracts.IAppointmentService;
 import dev.patika.ecommerce.business.abstracts.IAvailableDateService;
 import dev.patika.ecommerce.business.abstracts.IDoctorService;
-import dev.patika.ecommerce.business.concretes.AvailableDateManager;
-import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import dev.patika.ecommerce.core.result.Result;
 import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.core.utilities.ResultHelper;
-import dev.patika.ecommerce.dto.request.appointment.AppointmentSaveRequest;
-import dev.patika.ecommerce.dto.request.appointment.AppointmentUpdateRequest;
 import dev.patika.ecommerce.dto.request.availableDate.AvailableDateSaveRequest;
 import dev.patika.ecommerce.dto.request.availableDate.AvailableDateUpdateRequest;
-import dev.patika.ecommerce.dto.request.customer.CustomerSaveRequest;
-import dev.patika.ecommerce.dto.response.CursorResponse;
-import dev.patika.ecommerce.dto.response.appointment.AppointmentResponse;
 import dev.patika.ecommerce.dto.response.availableDateResponse.AvailableDateResponse;
-import dev.patika.ecommerce.dto.response.customer.CustomerResponse;
-import dev.patika.ecommerce.entities.*;
-import jakarta.validation.Valid;
+import dev.patika.ecommerce.entities.AvailableDate;
+import dev.patika.ecommerce.entities.Doctor;
+import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/v1/availableDates")
 public class AvailableDateController {
@@ -54,9 +45,15 @@ public class AvailableDateController {
         saveAvailableDate.setAvailableDate(availableDateSaveRequest.getDate());
 
         List<Doctor> doctors = availableDateSaveRequest.getDoctorIds().stream()
-                .map(doctorService::get)
+                .map(id -> {
+                    System.out.println("Fetching doctor with ID: " + id);
+                    Doctor doctor = doctorService.get(id);
+                    System.out.println("Fetched doctor: " + doctor);
+                    return doctor;
+                })
                 .collect(Collectors.toList());
         saveAvailableDate.setDoctorList(doctors);
+
         try {
             this.availableDateService.save(saveAvailableDate);
             AvailableDate savedDate = availableDateService.getAvailableDateById(saveAvailableDate.getId());
@@ -71,7 +68,6 @@ public class AvailableDateController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -88,7 +84,6 @@ public class AvailableDateController {
         AvailableDateResponse availableDateResponse = this.modelMapper.forResponse().map(updatedDate, AvailableDateResponse.class);
         return ResultHelper.success(availableDateResponse);
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

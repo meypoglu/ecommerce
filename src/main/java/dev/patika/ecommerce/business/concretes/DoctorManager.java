@@ -4,9 +4,7 @@ import dev.patika.ecommerce.business.abstracts.IDoctorService;
 import dev.patika.ecommerce.core.exception.NotFoundException;
 import dev.patika.ecommerce.core.utilities.Message;
 import dev.patika.ecommerce.dao.DoctorRepo;
-import dev.patika.ecommerce.entities.Customer;
 import dev.patika.ecommerce.entities.Doctor;
-import org.hibernate.annotations.NotFound;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +14,7 @@ import java.util.List;
 
 @Service
 public class DoctorManager implements IDoctorService {
-    private final DoctorRepo doctorRepo ;
-
+    private final DoctorRepo doctorRepo;
 
     public DoctorManager(DoctorRepo doctorRepo) {
         this.doctorRepo = doctorRepo;
