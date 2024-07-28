@@ -24,4 +24,7 @@ public class VaccineSaveRequest {
 
     @NotNull(message = "Aşı koruyuculuk sonlanma tarihi boş olamaz")
     private LocalDate protectionEndDate;
+
+    @NotNull(message = "Hayvan ID boş olamaz")
+    private Long animalId;
 }

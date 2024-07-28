@@ -14,5 +14,6 @@ public interface IAnimalService {
     Page<Animal> cursor(int page, int pageSize);
     List<Animal> findByName(String name);
     List<Animal> getAllAnimals();
+    List<Animal> findByCustomerId(Long customerId);
 
 }

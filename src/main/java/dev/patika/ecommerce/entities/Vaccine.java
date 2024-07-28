@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "vaccines")
@@ -31,13 +29,14 @@ public class Vaccine {
     private String code;
 
     @NotNull
-    @Column(name = "vaccine_strt_date")
+    @Column(name = "vaccine_start_date")
     private LocalDate protectionStartDate;
 
     @NotNull
     @Column(name = "vaccine_end_date")
     private LocalDate protectionEndDate;
 
-    @ManyToMany(mappedBy = "vaccineList")
-    private List<Animal> animalList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
 }

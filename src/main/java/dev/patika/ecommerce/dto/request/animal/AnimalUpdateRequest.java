@@ -33,13 +33,13 @@ public class AnimalUpdateRequest {
     @NotBlank(message = "Hayvan rengi boş olamaz")
     private String colour;
 
-    @Positive(message = "Hayvan doğum tarihi boş olamaz")
+    @NotNull(message = "Hayvan doğum tarihi boş olamaz")
     private LocalDate dateOfBirth;
 
     @Positive(message = "Hayvan sahip ID'si boş olamaz")
     private Long customerId;
 
-    @NotEmpty(message = "Hayvan aşı ID'si boş olamaz")
-    private List<Long> vaccineIds;
+    @Positive(message = "Doctor ID must be positive")
+    private Long doctorId;
 
 }

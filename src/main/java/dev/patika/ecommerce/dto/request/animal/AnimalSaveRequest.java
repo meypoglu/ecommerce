@@ -1,7 +1,6 @@
 package dev.patika.ecommerce.dto.request.animal;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -9,33 +8,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnimalSaveRequest {
-    @NotBlank(message = "Hayvan adı boş olamaz")
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Hayvan türü boş olamaz")
+    @NotBlank(message = "Species is required")
     private String species;
 
-    @NotBlank(message = "Hayvan cinsi boş olamaz")
+    @NotBlank(message = "Breed is required")
     private String breed;
 
-    @NotBlank(message = "Hayvan cinsiyeti boş olamaz")
+    @NotBlank(message = "Gender is required")
     private String gender;
 
-    @NotBlank(message = "Hayvan rengi boş olamaz")
+    @NotBlank(message = "Colour is required")
     private String colour;
 
-    @NotNull(message = "Hayvan doğum tarihi boş olamaz")
+    @NotNull(message = "Date of birth is required")
     private LocalDate dateOfBirth;
 
-    @Positive(message = "Hayvan sahip ID'si boş olamaz")
+    @Positive(message = "Customer ID is required")
     private Long customerId;
 
-    @NotEmpty(message = "Hayvan aşı ID'si boş olamaz")
-    private List<Long> vaccineIds;
+    @Positive(message = "Doctor ID must be positive")
+    private Long doctorId;
 }

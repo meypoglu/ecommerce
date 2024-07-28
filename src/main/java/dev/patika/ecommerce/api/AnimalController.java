@@ -1,17 +1,18 @@
 package dev.patika.ecommerce.api;
 
-import dev.patika.ecommerce.business.abstracts.*;
+import dev.patika.ecommerce.business.abstracts.IAnimalService;
+import dev.patika.ecommerce.business.abstracts.ICustomerService;
+import dev.patika.ecommerce.business.abstracts.IDoctorService;
 import dev.patika.ecommerce.core.config.modelMapper.IModelMapperService;
 import dev.patika.ecommerce.core.result.Result;
 import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.core.utilities.ResultHelper;
 import dev.patika.ecommerce.dto.request.animal.AnimalSaveRequest;
 import dev.patika.ecommerce.dto.request.animal.AnimalUpdateRequest;
-import dev.patika.ecommerce.dto.request.customer.CustomerUpdateRequest;
-import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.animal.AnimalResponse;
-import dev.patika.ecommerce.dto.response.customer.CustomerResponse;
-import dev.patika.ecommerce.entities.*;
+import dev.patika.ecommerce.entities.Animal;
+import dev.patika.ecommerce.entities.Customer;
+import dev.patika.ecommerce.entities.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,16 +29,12 @@ public class AnimalController {
     private final IModelMapperService modelMapper;
     private final ICustomerService customerService;
     private final IDoctorService doctorService;
-    private final IAppointmentService appointmentService;
-    private final IVaccineService vaccineService;
 
-    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper, ICustomerService customerService, IDoctorService doctorService, IAppointmentService appointmentService, IVaccineService vaccineService) {
+    public AnimalController(IAnimalService animalService, IModelMapperService modelMapper, ICustomerService customerService, IDoctorService doctorService) {
         this.animalService = animalService;
         this.modelMapper = modelMapper;
         this.customerService = customerService;
         this.doctorService = doctorService;
-        this.appointmentService = appointmentService;
-        this.vaccineService = vaccineService;
     }
 
     @PostMapping
@@ -48,62 +45,33 @@ public class AnimalController {
         Customer customer = customerService.get(animalSaveRequest.getCustomerId());
         animal.setCustomer(customer);
 
-        List<Vaccine> vaccines = animalSaveRequest.getVaccineIds().stream()
-                .map(vaccineService::get)
-                .collect(Collectors.toList());
-        animal.setVaccineList(vaccines);
+        if (animalSaveRequest.getDoctorId() != null) {
+            Doctor doctor = doctorService.get(animalSaveRequest.getDoctorId());
+            animal.setDoctor(doctor);
+        }
 
         Animal savedAnimal = animalService.save(animal);
 
-        // AnimalResponse oluşturulurken Customer ve Vaccine ID'leri ekleniyor
-        AnimalResponse response = new AnimalResponse();
-        response.setId(savedAnimal.getId());
-        response.setName(savedAnimal.getName());
-        response.setSpecies(savedAnimal.getSpecies());
-        response.setBreed(savedAnimal.getBreed());
-        response.setGender(savedAnimal.getGender());
-        response.setColour(savedAnimal.getColour());
-        response.setDateOfBirth(savedAnimal.getDateOfBirth());
-        response.setCustomerId(savedAnimal.getCustomer().getId());
-        response.setVaccineIds(savedAnimal.getVaccineList().stream()
-                .map(Vaccine::getId)
-                .collect(Collectors.toList()));
-
+        AnimalResponse response = modelMapper.forResponse().map(savedAnimal, AnimalResponse.class);
         return ResultHelper.created(response);
     }
 
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CustomerResponse> get(@PathVariable("id") Long id) {
-        Customer customer = this.customerService.get(id);
-        CustomerResponse customerResponse = this.modelMapper.forResponse().map(customer, CustomerResponse.class);
-        return ResultHelper.success(customerResponse);
+    public ResultData<AnimalResponse> get(@PathVariable("id") Long id) {
+        Animal animal = this.animalService.get(id);
+        AnimalResponse animalResponse = this.modelMapper.forResponse().map(animal, AnimalResponse.class);
+        return ResultHelper.success(animalResponse);
     }
 
     @GetMapping
     public ResultData<List<AnimalResponse>> getAllAnimals() {
         List<Animal> animals = animalService.getAllAnimals();
         List<AnimalResponse> response = animals.stream()
-                .map(animal -> {
-                    AnimalResponse animalResponse = new AnimalResponse();
-                    animalResponse.setId(animal.getId());
-                    animalResponse.setName(animal.getName());
-                    animalResponse.setSpecies(animal.getSpecies());
-                    animalResponse.setBreed(animal.getBreed());
-                    animalResponse.setGender(animal.getGender());
-                    animalResponse.setColour(animal.getColour());
-                    animalResponse.setDateOfBirth(animal.getDateOfBirth());
-                    animalResponse.setCustomerId(animal.getCustomer().getId());
-                    animalResponse.setVaccineIds(animal.getVaccineList().stream()
-                            .map(Vaccine::getId)
-                            .collect(Collectors.toList()));
-                    return animalResponse;
-                })
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class))
                 .collect(Collectors.toList());
         return ResultHelper.success(response);
     }
-
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -129,6 +97,15 @@ public class AnimalController {
             AnimalResponse animalResponse = this.modelMapper.forResponse().map(animal, AnimalResponse.class);
             animalResponses.add(animalResponse);
         }
+        return ResultHelper.success(animalResponses);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResultData<List<AnimalResponse>> getAnimalsByCustomerId(@PathVariable Long customerId) {
+        List<Animal> animals = this.animalService.findByCustomerId(customerId);
+        List<AnimalResponse> animalResponses = animals.stream()
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class))
+                .collect(Collectors.toList());
         return ResultHelper.success(animalResponses);
     }
 }

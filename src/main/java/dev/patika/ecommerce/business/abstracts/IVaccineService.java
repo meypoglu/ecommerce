@@ -9,10 +9,13 @@ import java.util.List;
 
 public interface IVaccineService {
     Vaccine save(Vaccine vaccine);
-    Vaccine get(long id);
+    Vaccine get(Long id);
     Vaccine update(Vaccine vaccine);
-    boolean delete(long id);
+    boolean delete(Long id);
     Page<Vaccine> cursor(int page, int pageSize);
     List<Vaccine> findByDateRange(LocalDate protectionStartDate, LocalDate protectionEndDate);
+    List<Vaccine> getAllVaccines();
+    List<Vaccine> findByAnimalId(Long animalId);
+
 
 }

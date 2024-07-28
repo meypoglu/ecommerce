@@ -1,5 +1,4 @@
 package dev.patika.ecommerce.entities;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,13 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "animals")
+@Table(name = "animals", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"animal_name", "animal_species", "animal_breed", "animal_gender", "animal_colour", "animal_birth_date"})
+})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Animal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "animal_sequence")
+    @SequenceGenerator(name = "animal_sequence", sequenceName = "animal_seq", allocationSize = 1)
     @Column(name = "animal_id")
     private Long id;
 
@@ -55,21 +57,8 @@ public class Animal {
     private Doctor doctor;
 
     @OneToMany(mappedBy = "animal")
-    private List<Appointment> appointments;
+    private List<Appointment> appointments = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "animalToVaccine", joinColumns = {@JoinColumn(name = "animal_id")}, inverseJoinColumns = {@JoinColumn(name = "vaccine_id")})
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vaccine> vaccineList = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "Animal{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", species='" + species + '\'' +
-                ", birthDate=" + dateOfBirth +
-                ", customer=" + (customer != null ? customer.getId() : "null") +
-                // appointments eklenmedi
-                '}';
-    }
 }

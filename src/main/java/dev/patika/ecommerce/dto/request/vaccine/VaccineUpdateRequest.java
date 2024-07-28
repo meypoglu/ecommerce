@@ -28,4 +28,7 @@ public class VaccineUpdateRequest {
 
     @NotNull(message = "Aşı koruyuculuk sonlanma tarihi boş olamaz")
     private LocalDate protectionEndDate;
+
+    @Positive(message = "Hayvan ID'si boş olamaz")
+    private Long animalId;
 }

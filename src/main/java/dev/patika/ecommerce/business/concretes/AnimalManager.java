@@ -5,8 +5,6 @@ import dev.patika.ecommerce.core.exception.NotFoundException;
 import dev.patika.ecommerce.core.utilities.Message;
 import dev.patika.ecommerce.dao.AnimalRepo;
 import dev.patika.ecommerce.entities.Animal;
-import dev.patika.ecommerce.entities.Customer;
-import org.hibernate.annotations.NotFound;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +23,20 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public Animal save(Animal animal) {
+        List<Animal> existingAnimals = animalRepo.findByNameAndSpeciesAndBreedAndGenderAndColourAndDateOfBirth(
+                animal.getName(), animal.getSpecies(), animal.getBreed(), animal.getGender(), animal.getColour(), animal.getDateOfBirth()
+        );
+
+        if (!existingAnimals.isEmpty()) {
+            throw new RuntimeException("Animal with the same details already exists.");
+        }
+
         return this.animalRepo.save(animal);
     }
 
     @Override
     public Animal get(Long id) {
-        return this.animalRepo.findById(Integer.parseInt(id.toString())).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+        return this.animalRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override
@@ -65,4 +71,10 @@ public class AnimalManager implements IAnimalService {
     public List<Animal> getAllAnimals() {
         return animalRepo.findAll();
     }
+
+    @Override
+    public List<Animal> findByCustomerId(Long customerId) {
+        return animalRepo.findByCustomerId(customerId);
+    }
 }
+
