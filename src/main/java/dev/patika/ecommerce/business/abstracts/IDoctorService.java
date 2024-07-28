@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface IDoctorService {
     Doctor save(Doctor doctor);
-    Doctor get(int id);
+    Doctor get(long id);
     Doctor update(Doctor doctor);
-    boolean delete(int id);
+    boolean delete(long id);
     Page<Doctor> cursor(int page, int pageSize);
     List<Doctor> findByName(String name);
 }

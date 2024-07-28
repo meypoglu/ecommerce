@@ -14,10 +14,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class VaccineManagement implements IVaccineService {
+public class VaccineManager implements IVaccineService {
     private final VaccineRepo vaccineRepo;
 
-    public VaccineManagement(VaccineRepo vaccineRepo) {
+    public VaccineManager(VaccineRepo vaccineRepo) {
         this.vaccineRepo = vaccineRepo;
     }
 

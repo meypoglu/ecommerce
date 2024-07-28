@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_id")
-    private int id;
+    private long id;
 
     @NotBlank
     @Column(name = "doctor_name")
@@ -44,4 +45,8 @@ public class Doctor {
 
     @OneToMany(mappedBy = "doctorAppointment")
     private List<Appointment> appointments;
+
+    @ManyToMany
+    @JoinTable( name = "doctor_available_date", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "available_date_id"))
+    private List<AvailableDate> availableDates = new ArrayList<>();
 }

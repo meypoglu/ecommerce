@@ -2,6 +2,7 @@ package dev.patika.ecommerce.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +19,9 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appointment_id")
-    private int id;
+    private long id;
 
-    @NotBlank
+    @NotNull
     @Column(name = "appointment_date")
     private LocalDateTime appointmentDate;
 
@@ -29,6 +30,10 @@ public class Appointment {
     private Animal animal;
 
     @ManyToOne
-    @JoinColumn(name ="appointment_doctor_name", referencedColumnName = "doctor_id")
+    @JoinColumn(name ="appointment_doctor_id", referencedColumnName = "doctor_id")
     private Doctor doctorAppointment;
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_available_date_id", referencedColumnName = "available_date_id")
+    private AvailableDate availableDate;
 }

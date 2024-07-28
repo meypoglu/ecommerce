@@ -60,4 +60,6 @@ public class Animal {
     @ManyToMany
     @JoinTable(name = "animalToVaccine", joinColumns = {@JoinColumn(name = "animal_id")}, inverseJoinColumns = {@JoinColumn(name = "vaccine_id")})
     private List<Vaccine> vaccineList = new ArrayList<>();
+
+
 }
