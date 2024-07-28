@@ -17,7 +17,7 @@ Veteriner Yönetim Sistemi, veteriner randevularını, doktorları, hayvanları 
 - **Spring Boot:** Hızlı uygulama geliştirme ve yapılandırma için.
 - **Hibernate (JPA):** Veritabanı işlemleri için.
 - **PostgreSQL:** Veritabanı yönetim sistemi.
-- **ModelMapper:** Nesne-DTÖ dönüşümleri için.
+- **ModelMapper:** Nesne-DTO dönüşümleri için.
 - **Maven:** Proje yönetimi ve bağımlılık yönetimi için.
 
 ## Gereksinimler
