@@ -33,7 +33,7 @@ public class Appointment {
     @JoinColumn(name ="appointment_doctor_id", referencedColumnName = "doctor_id")
     private Doctor doctorAppointment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_available_date_id", referencedColumnName = "available_date_id")
     private AvailableDate availableDate;
 

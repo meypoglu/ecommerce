@@ -33,7 +33,7 @@ public class AvailableDate {
     )
     private List<Doctor> doctorList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "availableDate")
+    @OneToMany(mappedBy = "availableDate", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Appointment> appointments = new ArrayList<>();
 
     @Override

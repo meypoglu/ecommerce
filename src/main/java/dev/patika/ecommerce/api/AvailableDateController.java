@@ -19,7 +19,10 @@ import dev.patika.ecommerce.dto.response.availableDateResponse.AvailableDateResp
 import dev.patika.ecommerce.dto.response.customer.CustomerResponse;
 import dev.patika.ecommerce.entities.*;
 import jakarta.validation.Valid;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -41,6 +44,7 @@ public class AvailableDateController {
         this.availableDateService = availableDateService;
         this.modelMapper = modelMapper;
         this.doctorService = doctorService;
+        configureModelMapper(this.modelMapper.forRequest());
     }
 
     @PostMapping
@@ -68,6 +72,7 @@ public class AvailableDateController {
         }
     }
 
+
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AvailableDateResponse> update(@Valid @RequestBody AvailableDateUpdateRequest availableDateUpdateRequest) {
@@ -77,9 +82,14 @@ public class AvailableDateController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        AvailableDateResponse availableDateResponse = this.modelMapper.forRequest().map(updateAvailableDate, AvailableDateResponse.class);
+
+        // Güncellenmiş veriyi almak için tekrar yükleyin
+        AvailableDate updatedDate = availableDateService.getAvailableDateById(updateAvailableDate.getId());
+
+        AvailableDateResponse availableDateResponse = this.modelMapper.forResponse().map(updatedDate, AvailableDateResponse.class);
         return ResultHelper.success(availableDateResponse);
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -110,5 +120,52 @@ public class AvailableDateController {
         AvailableDate availableDate = this.availableDateService.getAvailableDateById(id);
         AvailableDateResponse response = this.modelMapper.forRequest().map(availableDate, AvailableDateResponse.class);
         return ResultHelper.success(response);
+    }
+
+    private void configureModelMapper(ModelMapper modelMapper) {
+        Converter<List<Long>, List<Doctor>> toDoctorListConverter = new Converter<List<Long>, List<Doctor>>() {
+            @Override
+            public List<Doctor> convert(MappingContext<List<Long>, List<Doctor>> context) {
+                List<Long> doctorIds = context.getSource();
+                if (doctorIds != null) {
+                    return doctorIds.stream()
+                            .map(id -> {
+                                Doctor doctor = new Doctor();
+                                doctor.setId(id);
+                                return doctor;
+                            }).collect(Collectors.toList());
+                } else {
+                    return new ArrayList<>();
+                }
+            }
+        };
+
+        Converter<List<Doctor>, List<Long>> fromDoctorListConverter = new Converter<List<Doctor>, List<Long>>() {
+            @Override
+            public List<Long> convert(MappingContext<List<Doctor>, List<Long>> context) {
+                List<Doctor> doctors = context.getSource();
+                if (doctors != null) {
+                    return doctors.stream()
+                            .map(Doctor::getId)
+                            .collect(Collectors.toList());
+                } else {
+                    return new ArrayList<>();
+                }
+            }
+        };
+
+        modelMapper.addMappings(new PropertyMap<AvailableDateUpdateRequest, AvailableDate>() {
+            @Override
+            protected void configure() {
+                using(toDoctorListConverter).map(source.getDoctorIds(), destination.getDoctorList());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<AvailableDate, AvailableDateResponse>() {
+            @Override
+            protected void configure() {
+                using(fromDoctorListConverter).map(source.getDoctorList(), destination.getDoctorIds());
+            }
+        });
     }
 }

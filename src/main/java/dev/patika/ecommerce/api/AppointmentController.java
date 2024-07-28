@@ -108,10 +108,13 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") Long id) {
-        this.appointmentService.delete(id);
-        return ResultHelper.success();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        try {
+            availableDateService.delete(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @GetMapping("/search")
