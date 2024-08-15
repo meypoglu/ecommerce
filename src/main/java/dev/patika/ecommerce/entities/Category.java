@@ -21,4 +21,10 @@ public class Category {
     @Column(name = "category_name")
     private String name;
 
+    @NotNull
+    @Column(name = "category_description")
+    private String description;
+
+    @ManyToMany(mappedBy = "categoryList")
+    private List<Book> bookList;
 }
