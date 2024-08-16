@@ -5,6 +5,7 @@ import dev.patika.ecommerce.core.result.ResultData;
 import dev.patika.ecommerce.dto.response.CursorResponse;
 import dev.patika.ecommerce.dto.response.category.CategoryResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 
 public class ResultHelper {
     public static <T> ResultData<T> created(T data) {
