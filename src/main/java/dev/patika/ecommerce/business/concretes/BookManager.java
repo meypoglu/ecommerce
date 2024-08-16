@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class BookManager implements IBookService {
     private final BookRepo bookRepo;
     private final CategoryRepo categoryRepo;
+
     public BookManager(BookRepo bookRepo, CategoryRepo categoryRepo) {
         this.bookRepo = bookRepo;
         this.categoryRepo = categoryRepo;
@@ -52,3 +53,4 @@ public class BookManager implements IBookService {
         bookRepo.delete(book);
         return true;
     }
+}

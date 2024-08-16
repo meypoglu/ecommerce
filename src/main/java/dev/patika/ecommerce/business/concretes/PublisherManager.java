@@ -22,7 +22,7 @@ public class PublisherManager implements IPublisherService {
 
     @Override
     public Publisher get(int id) {
-        return this.publisherRepo.findById(id).orElseThrow(()-> new NotFoundException(Message.NOT_FOUND));
+        return this.publisherRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override
@@ -41,3 +41,4 @@ public class PublisherManager implements IPublisherService {
         this.publisherRepo.delete(publisher);
         return true;
     }
+}
