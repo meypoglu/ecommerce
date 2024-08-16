@@ -23,6 +23,10 @@ public class ResultHelper {
         return new Result(true, Message.OK, "200");
     }
 
+    public static Result ok(){
+        return new Result(true, Message.OK, "200");
+    }
+
     public static Result notFoundError(String msg) {
         return new Result(false, msg, "404");
     }
