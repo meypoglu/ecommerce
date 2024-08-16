@@ -41,6 +41,9 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Borrow> borrowList;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
